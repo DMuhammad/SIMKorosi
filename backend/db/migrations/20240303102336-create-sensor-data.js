@@ -2,33 +2,27 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Users", {
+    await queryInterface.createTable("SensorData", {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
       },
-      username: {
+      suhu: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.FLOAT,
       },
-      password: {
+      kelembapan: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.FLOAT,
       },
-      id_role: {
+      ph: {
         allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: "Roles",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
+        type: Sequelize.FLOAT,
       },
-      refresh_token: {
-        allowNull: true,
+      lokasi: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       createdAt: {
@@ -42,6 +36,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Users");
+    await queryInterface.dropTable("SensorData");
   },
 };
