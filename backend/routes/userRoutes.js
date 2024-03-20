@@ -7,6 +7,6 @@ const userRoutes = Router();
 userRoutes.post("/register", userController.register);
 userRoutes.post("/login", userController.login);
 userRoutes.get("/token", userController.refreshToken);
-userRoutes.post("/logout", userController.logout);
+userRoutes.get("/logout", userController.logout);
 
 module.exports = userRoutes;
