@@ -9,23 +9,18 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
       },
-      username: {
+      nama_lengkap: {
         allowNull: false,
         type: Sequelize.STRING,
+      },
+      email: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        unique: true,
       },
       password: {
         allowNull: false,
         type: Sequelize.STRING,
-      },
-      id_role: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: "Roles",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
       },
       refresh_token: {
         allowNull: true,
