@@ -9,24 +9,21 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.belongsTo(models.Role, {
-        foreignKey: "id_role",
-        as: "role",
-      });
     }
   }
   User.init(
     {
-      username: {
+      nama_lengkap: {
         type: DataTypes.STRING,
         allowNull: false,
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
       },
       password: {
         type: DataTypes.STRING,
-        allowNull: false,
-      },
-      id_role: {
-        type: DataTypes.INTEGER,
         allowNull: false,
       },
       refresh_token: {
