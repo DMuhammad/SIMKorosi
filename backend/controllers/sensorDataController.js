@@ -1,5 +1,6 @@
 const db = require("../db/models");
 const { v4: uuidv4 } = require("uuid");
+const socket = require("../utils/socket");
 
 const SensorData = db.sequelize.models.SensorData;
 
@@ -37,6 +38,7 @@ module.exports = {
 
   async addNewData(req, res) {
     const { suhu, kelembapan, ph, lokasi } = req.body;
+    const io = socket.getIO();
     try {
       const data = await SensorData.create({
         id: uuidv4(),
@@ -45,6 +47,8 @@ module.exports = {
         ph,
         lokasi,
       });
+
+      io.emit("data-baru", data);
 
       return res.status(201).json({
         status: "success",

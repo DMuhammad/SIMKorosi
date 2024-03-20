@@ -6,9 +6,9 @@ const User = db.sequelize.models.User;
 
 module.exports = {
   async register(req, res) {
-    const { username, password, confPassword, id_role } = req.body;
+    const { namalengkap, email, password, confpassword } = req.body;
 
-    if (password !== confPassword) {
+    if (password !== confpassword) {
       return res.status(400).json({
         status: "error",
         code: 400,
@@ -22,9 +22,9 @@ module.exports = {
     try {
       const user = await User.create({
         id: uuidv4(),
-        username: username,
+        nama_lengkap: namalengkap,
+        email,
         password: hashPassword,
-        id_role: id_role,
       });
 
       res.status(201).json({
@@ -33,7 +33,6 @@ module.exports = {
         message: "Data user berhasil ditambahkan",
         data: {
           id: user.id,
-          username: user.username,
         },
       });
     } catch (error) {
@@ -45,11 +44,11 @@ module.exports = {
     }
   },
   async login(req, res) {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
     try {
       const user = await User.findOne({
         where: {
-          username: username,
+          email: email,
         },
       });
 
@@ -64,13 +63,13 @@ module.exports = {
       }
 
       const accessToken = jwt.sign(
-        { id: user.id, username },
+        { id: user.id, email },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: "1d" }
       );
 
       const refreshToken = jwt.sign(
-        { id: user.id, username },
+        { id: user.id, email },
         process.env.REFRESH_TOKEN_SECRET,
         { expiresIn: "7d" }
       );
@@ -97,6 +96,8 @@ module.exports = {
         message: "Login Berhasil",
         data: {
           id: user.id,
+          nama: user.nama_lengkap,
+          accessToken,
         },
       });
     } catch (error) {
@@ -202,7 +203,9 @@ module.exports = {
         },
       }
     );
-    res.clearCookie("refresh_token");
+    res.clearCookie("refresh_token", {
+      httpOnly: true,
+    });
     return res.status(200).json({
       status: "success",
       code: 200,
