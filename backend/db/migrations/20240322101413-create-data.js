@@ -2,12 +2,23 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("SensorData", {
+    await queryInterface.createTable("data", {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+      },
+      id_sensor_suhu: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      id_sensor_kelembapan: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      id_sensor_ph: {
+        allowNull: false,
+        type: Sequelize.STRING,
       },
       suhu: {
         allowNull: false,
@@ -21,21 +32,33 @@ module.exports = {
         allowNull: false,
         type: Sequelize.FLOAT,
       },
-      lokasi: {
+      id_lokasi: {
         allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          key: "id",
+          model: "lokasis",
+        },
+      },
+      indikasi: {
+        allowNull: true,
         type: Sequelize.STRING,
       },
-      createdAt: {
+      tingkat_keparahan: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE,
       },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("SensorData");
+    await queryInterface.dropTable("data");
   },
 };
