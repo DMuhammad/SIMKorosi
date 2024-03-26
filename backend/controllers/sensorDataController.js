@@ -2,17 +2,18 @@ const db = require("../db/models");
 const { v4: uuidv4 } = require("uuid");
 const socket = require("../utils/socket");
 
-const SensorData = db.sequelize.models.SensorData;
+const Data = db.sequelize.models.Data;
 
 module.exports = {
   async getDatas(req, res) {
     const limit = 10;
     const { page } = req.query;
     try {
-      const { count, rows: data } = await SensorData.findAndCountAll({
-        order: [["createdAt", "DESC"]],
+      const { count, rows: data } = await Data.findAndCountAll({
+        order: [["created_at", "DESC"]],
         limit: 10,
         offset: (page - 1) * limit,
+        include: ["lokasi"],
       });
 
       return res.status(200).json({
@@ -37,15 +38,27 @@ module.exports = {
   },
 
   async addNewData(req, res) {
-    const { suhu, kelembapan, ph, lokasi } = req.body;
+    const {
+      id_sensor_suhu,
+      id_sensor_kelembapan,
+      id_sensor_ph,
+      suhu,
+      kelembapan,
+      ph,
+      id_lokasi,
+    } = req.body;
     const io = socket.getIO();
+
     try {
-      const data = await SensorData.create({
+      const data = await Data.create({
         id: uuidv4(),
+        id_sensor_suhu,
+        id_sensor_kelembapan,
+        id_sensor_ph,
         suhu,
         kelembapan,
         ph,
-        lokasi,
+        id_lokasi,
       });
 
       io.emit("data-baru", data);
@@ -56,6 +69,9 @@ module.exports = {
         message: "Berhasil menambahkan data sensor",
         data: {
           id: data.id,
+          suhu,
+          kelembapan,
+          ph,
         },
       });
     } catch (error) {
