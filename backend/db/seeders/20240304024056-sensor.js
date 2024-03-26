@@ -3,32 +3,65 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   up(queryInterface, Sequelize) {
-    return queryInterface.bulkInsert("Sensors", [
+    return queryInterface.bulkInsert("sensors", [
       {
-        id: 1,
-        tipe: "Sensor Suhu",
-        lokasi: "Plant A",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        id: "SS-S-01",
+        jenis_sensor: "Sensor Suhu",
+        created_at: new Date(),
+        updated_at: new Date(),
       },
       {
-        id: 2,
-        tipe: "Sensor Kelembapan",
-        lokasi: "Plant A",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        id: "SS-K-01",
+        jenis_sensor: "Sensor Kelembapan",
+        created_at: new Date(),
+        updated_at: new Date(),
       },
       {
-        id: 3,
-        tipe: "Sensor pH",
-        lokasi: "Plant A",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        id: "SS-P-01",
+        jenis_sensor: "Sensor pH",
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        id: "SS-S-02",
+        jenis_sensor: "Sensor Suhu",
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        id: "SS-K-02",
+        jenis_sensor: "Sensor Kelembapan",
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        id: "SS-P-02",
+        jenis_sensor: "Sensor pH",
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        id: "SS-S-03",
+        jenis_sensor: "Sensor Suhu",
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        id: "SS-K-03",
+        jenis_sensor: "Sensor Kelembapan",
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        id: "SS-P-03",
+        jenis_sensor: "Sensor pH",
+        created_at: new Date(),
+        updated_at: new Date(),
       },
     ]);
   },
 
   async down(queryInterface, Sequelize) {
-    return queryInterface.bulkDelete("Sensors", null, {});
+    return queryInterface.bulkDelete("sensors", null, {});
   },
 };
