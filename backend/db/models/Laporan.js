@@ -1,47 +1,43 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class SensorLokasi extends Model {
+  class Laporan extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsTo(models.Sensor, {
-        foreignKey: "id_sensor",
-        as: "sensor",
-      });
-      this.belongsTo(models.Lokasi, {
-        foreignKey: "id_lokasi",
-        as: "lokasi",
+      this.belongsTo(models.User, {
+        foreignKey: "id_pengguna",
+        as: "pengguna",
       });
     }
   }
-  SensorLokasi.init(
+  Laporan.init(
     {
-      id_sensor: {
+      id_pengguna: {
         allowNull: false,
-        type: DataTypes.STRING,
+        type: DataTypes.UUID,
         references: {
           key: "id",
-          model: "Sensor",
+          model: "User",
         },
       },
-      id_lokasi: {
+      tanggal_mulai: {
         allowNull: false,
-        type: DataTypes.INTEGER,
-        references: {
-          key: "id",
-          model: "Lokasi",
-        },
+        type: DataTypes.DATE,
+      },
+      tanggal_selesai: {
+        allowNull: false,
+        type: DataTypes.DATE,
       },
     },
     {
       sequelize,
-      modelName: "SensorLokasi",
+      modelName: "Laporan",
       underscored: true,
     }
   );
-  return SensorLokasi;
+  return Laporan;
 };
