@@ -11,6 +11,11 @@ sensorDataRoutes.get(
   verifyToken,
   sensorDataController.getDataCharts
 );
+sensorDataRoutes.get(
+  "/download/excel",
+  verifyToken,
+  sensorDataController.exportData
+);
 sensorDataRoutes.post("/create", verifySensor, sensorDataController.addNewData);
 
 module.exports = sensorDataRoutes;

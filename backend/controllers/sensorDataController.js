@@ -1,5 +1,6 @@
 const db = require("../db/models");
 const { v4: uuidv4 } = require("uuid");
+const excelJS = require("exceljs");
 const socket = require("../utils/socket");
 const { getDateRange } = require("../utils/dateUtils");
 
@@ -114,6 +115,99 @@ module.exports = {
           kelembapan,
           ph,
         },
+      });
+    } catch (error) {
+      return res.status(400).json({
+        status: "error",
+        code: 400,
+        message: error.message,
+      });
+    }
+  },
+
+  async exportData(req, res) {
+    const { tanggal_mulai, tanggal_selesai, nama } = req.query;
+
+    try {
+      const data = await Data.findAll({
+        where: {
+          created_at: {
+            [db.Sequelize.Op.gte]: tanggal_mulai,
+            [db.Sequelize.Op.lte]: tanggal_selesai,
+          },
+        },
+        include: ["lokasi"],
+      });
+
+      const prepareDataForExcel = (data) => {
+        return data.map((item) => ({
+          suhu: item.suhu,
+          kelembapan: item.kelembapan,
+          ph: item.ph,
+          indikasi: item.indikasi,
+          tingkat_keparahan: item.tingkat_keparahan,
+          createdAt: item.createdAt,
+          nama_lokasi: item.lokasi.nama_lokasi,
+        }));
+      };
+
+      const preparedData = prepareDataForExcel(data);
+
+      const workbook = new excelJS.Workbook();
+      const worksheet = workbook.addWorksheet("Data Sensor", {
+        pageSetup: {
+          paperSize: 9,
+          orientation: "portrait",
+        },
+      });
+
+      workbook.creator = nama;
+
+      worksheet.columns = [
+        {
+          header: "Suhu",
+          key: "suhu",
+          width: 15,
+        },
+        { header: "Kelembapan", key: "kelembapan", width: 15 },
+        { header: "PH", key: "ph", width: 10 },
+        {
+          header: "Lokasi",
+          key: "nama_lokasi",
+          width: 15,
+          style: {
+            alignment: {
+              horizontal: "right",
+            },
+          },
+        },
+        { header: "Indikasi Korosi", key: "indikasi", width: 15 },
+        {
+          header: "Tingkat Keparahan Korosi",
+          key: "tingkat_keparahan",
+          width: 25,
+        },
+        {
+          header: "Tanggal",
+          key: "createdAt",
+          width: 25,
+          style: {
+            numFmt: "dd/mm/yyyy hh:mm:ss",
+          },
+        },
+      ];
+
+      preparedData.forEach((data) => {
+        worksheet.addRow(data);
+      });
+
+      res.setHeader(
+        "Content-Type",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      );
+
+      workbook.xlsx.write(res).then(() => {
+        res.status(200).end();
       });
     } catch (error) {
       return res.status(400).json({
