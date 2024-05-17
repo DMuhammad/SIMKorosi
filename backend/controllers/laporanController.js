@@ -4,12 +4,15 @@ const Laporan = db.sequelize.models.Laporan;
 
 module.exports = {
   async getLaporan(req, res) {
-    const { id_pengguna } = req.query;
+    const limit = 25;
+    const { id_pengguna, page } = req.query;
     try {
-      const data = await Laporan.findAll({
+      const { count, rows: data } = await Laporan.findAndCountAll({
         where: {
           id_pengguna,
         },
+        limit: 25,
+        offset: (page - 1) * limit,
       });
 
       return res.status(200).json({
@@ -17,6 +20,12 @@ module.exports = {
         code: 200,
         message: "Berhasil mengambil data laporan",
         data,
+        pagination: {
+          page: parseInt(page),
+          limit,
+          total: count,
+          totalPages: Math.ceil(count / limit),
+        },
       });
     } catch (error) {
       return res.status(400).json({
@@ -40,6 +49,28 @@ module.exports = {
         code: 201,
         message: "Berhasil membuat laporan",
         data: laporan,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        status: "error",
+        code: 400,
+        message: error.message,
+      });
+    }
+  },
+  async deleteLaporan(req, res) {
+    const { id } = req.params;
+    try {
+      Laporan.destroy({
+        where: {
+          id,
+        },
+      }).then(() => {
+        return res.status(200).json({
+          status: "success",
+          code: 200,
+          message: "Berhasil menghapus laporan",
+        });
       });
     } catch (error) {
       return res.status(400).json({

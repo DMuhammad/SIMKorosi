@@ -6,5 +6,10 @@ const laporanRoutes = Router();
 
 laporanRoutes.get("/", verifyToken, LaporanController.getLaporan);
 laporanRoutes.post("/create", verifyToken, LaporanController.addNewLaporan);
+laporanRoutes.delete(
+  "/delete/:id",
+  verifyToken,
+  LaporanController.deleteLaporan
+);
 
 module.exports = laporanRoutes;
