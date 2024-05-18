@@ -34,7 +34,7 @@ export const useLogin = () => {
       localStorage.setItem("auth", JSON.stringify(res.data.data));
       dispatch({ type: "LOGIN", payload: res.data.data });
       navigate("/");
-      toast.success(`Selamat Datang ${res.data.data.nama}`);
+      toast.success(`Selamat Datang ${res.data.data.nama.split(" ")[0]}`);
     }
   };
 
@@ -58,7 +58,7 @@ export const useRegister = () => {
     if (res.data?.status === "success") {
       setIsLoading(false);
       navigate("/auth/login");
-      toast.success("Register success");
+      toast.success(res.data.message);
     }
   };
 
