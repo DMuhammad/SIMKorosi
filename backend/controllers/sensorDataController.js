@@ -91,6 +91,23 @@ module.exports = {
     } = req.body;
     const io = socket.getIO();
 
+    let indikasi, tingkat_keparahan;
+
+    if (suhu > 30 && kelembapan > 80 && ph < 7) {
+      indikasi = "Tinggi";
+      tingkat_keparahan = "Tinggi";
+    } else if (
+      (suhu > 30 && kelembapan > 80) ||
+      (suhu > 30 && ph < 7) ||
+      (kelembapan > 80 && ph < 7)
+    ) {
+      indikasi = "Sedang";
+      tingkat_keparahan = "Sedang";
+    } else if (suhu > 30 || kelembapan > 80 || ph < 7) {
+      indikasi = "Rendah";
+      tingkat_keparahan = "Rendah";
+    }
+
     try {
       const data = await Data.create({
         id: uuidv4(),
@@ -101,6 +118,8 @@ module.exports = {
         kelembapan,
         ph,
         id_lokasi,
+        indikasi,
+        tingkat_keparahan,
       });
 
       io.emit("data-baru", data);
