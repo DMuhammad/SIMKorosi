@@ -8,6 +8,20 @@ module.exports = {
   async register(req, res) {
     const { namalengkap, email, password, confpassword } = req.body;
 
+    const user = await User.findOne({
+      where: {
+        email,
+      },
+    });
+
+    if (user) {
+      return res.status(400).json({
+        status: "error",
+        code: 400,
+        message: "Email sudah terdaftar",
+      });
+    }
+
     if (password !== confpassword) {
       return res.status(400).json({
         status: "error",
@@ -30,7 +44,7 @@ module.exports = {
       res.status(201).json({
         status: "success",
         code: 201,
-        message: "Data user berhasil ditambahkan",
+        message: "Registrasi Berhasil",
         data: {
           id: user.id,
         },
@@ -51,6 +65,14 @@ module.exports = {
           email: email,
         },
       });
+
+      if (!user) {
+        return res.status(400).json({
+          status: "error",
+          code: 400,
+          message: "Akun tidak ditemukan",
+        });
+      }
 
       const match = await bcrypt.compare(password, user.password);
 
