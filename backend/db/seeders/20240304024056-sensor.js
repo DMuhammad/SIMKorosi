@@ -58,6 +58,42 @@ module.exports = {
         created_at: new Date(),
         updated_at: new Date(),
       },
+      {
+        id: "SS-S-04",
+        jenis_sensor: "Sensor Suhu",
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        id: "SS-K-04",
+        jenis_sensor: "Sensor Kelembapan",
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        id: "SS-P-04",
+        jenis_sensor: "Sensor pH",
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        id: "SS-S-05",
+        jenis_sensor: "Sensor Suhu",
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        id: "SS-K-05",
+        jenis_sensor: "Sensor Kelembapan",
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        id: "SS-P-05",
+        jenis_sensor: "Sensor pH",
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
     ]);
   },
 

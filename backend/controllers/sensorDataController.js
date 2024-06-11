@@ -93,19 +93,27 @@ module.exports = {
 
     let indikasi, tingkat_keparahan;
 
-    if (suhu > 30 && kelembapan > 80 && ph < 7) {
-      indikasi = "Tinggi";
-      tingkat_keparahan = "Tinggi";
-    } else if (
-      (suhu > 30 && kelembapan > 80) ||
-      (suhu > 30 && ph < 7) ||
-      (kelembapan > 80 && ph < 7)
-    ) {
-      indikasi = "Sedang";
-      tingkat_keparahan = "Sedang";
-    } else if (suhu > 30 || kelembapan > 80 || ph < 7) {
+    if (kelembapan < 80 && suhu < 50 && ph < 7) {
       indikasi = "Rendah";
       tingkat_keparahan = "Rendah";
+    } else if (kelembapan < 80 && suhu > 50 && ph > 7) {
+      indikasi = "Rendah";
+      tingkat_keparahan = "Rendah";
+    } else if (kelembapan < 80 && suhu > 50 && ph < 7) {
+      indikasi = "Sedang";
+      tingkat_keparahan = "Sedang";
+    } else if (kelembapan > 80 && suhu < 50 && ph > 7) {
+      indikasi = "Rendah";
+      tingkat_keparahan = "Rendah";
+    } else if (kelembapan > 80 && suhu < 50 && ph < 7) {
+      indikasi = "Sedang";
+      tingkat_keparahan = "Sedang";
+    } else if (kelembapan > 80 && suhu > 50 && ph > 7) {
+      indikasi = "Sedang";
+      tingkat_keparahan = "Sedang";
+    } else if (kelembapan > 80 && suhu > 50 && ph < 7) {
+      indikasi = "Tinggi";
+      tingkat_keparahan = "Tinggi";
     }
 
     try {
@@ -122,7 +130,10 @@ module.exports = {
         tingkat_keparahan,
       });
 
-      io.emit("data-baru", data);
+      io.emit("data-baru", {
+        data,
+        timestamps: new Date(),
+      });
 
       return res.status(201).json({
         status: "success",
