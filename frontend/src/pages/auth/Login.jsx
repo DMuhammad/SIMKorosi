@@ -29,8 +29,8 @@ export default function Login() {
         </h2>
       </div>
 
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-        <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
+      <div className="mt-10 mx-auto w-11/12 sm:w-full max-w-[480px]">
+        <div className="bg-white px-6 py-6 shadow rounded-lg sm:px-12 sm:py-12">
           <form className="space-y-6" onSubmit={handleSubmit}>
             <TextInputWithLabel
               id={"email"}
