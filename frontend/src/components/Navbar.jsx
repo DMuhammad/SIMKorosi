@@ -1,4 +1,8 @@
-import { Bars3Icon, UserCircleIcon } from "@heroicons/react/24/outline";
+import {
+  Bars3Icon,
+  BellIcon,
+  UserCircleIcon,
+} from "@heroicons/react/24/outline";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { useAuth, useLogout } from "../hooks/useAuth";
@@ -23,6 +27,10 @@ export default function Navbar({ title, handleSidebar }) {
           {title}
         </div>
         <div className="relative inline-block text-left">
+          {/* <button className="mx-1">
+            <span className="sr-only">View notifications</span>
+            <BellIcon className="h-7 w-7 text-white" />
+          </button> */}
           <button onClick={() => setIsOpen((prev) => !prev)}>
             <span className="sr-only">Your profile</span>
             <UserCircleIcon className="h-8 w-8 text-white" />

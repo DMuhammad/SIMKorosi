@@ -1,7 +1,7 @@
 import ReactApexChart from "react-apexcharts";
 import PropTypes from "prop-types";
 
-export default function LineChart({ title, xData, yData }) {
+export default function LineChart({ title, xData, yData, yAxis }) {
   const options = {
     chart: {
       animations: {
@@ -39,6 +39,25 @@ export default function LineChart({ title, xData, yData }) {
     yaxis: {
       show: true,
     },
+    annotations: {
+      yaxis: [
+        {
+          y: yAxis,
+          borderColor: "#D51B21",
+          strokeDashArray: 0,
+          label: {
+            borderColor: "#D51B21",
+            style: {
+              color: "#fff",
+              background: "#D51B21",
+            },
+            text: `Batas nilai ${title}`,
+            textAnchor: "center",
+            position: "left",
+          },
+        },
+      ],
+    },
   };
 
   const series = [
@@ -49,7 +68,7 @@ export default function LineChart({ title, xData, yData }) {
   ];
 
   return (
-    <div className="max-w-sm w-full shadow-slate-400 p-4 md:p-6 overflow-hidden bg-white rounded-lg">
+    <div className="max-w-full lg:max-w-sm w-full shadow-slate-400 p-4 md:p-6 overflow-hidden bg-white rounded-lg">
       <div className="flex justify-between">
         <h1 className="self-center ms-4">{title}</h1>
       </div>
@@ -70,4 +89,5 @@ LineChart.propTypes = {
   title: PropTypes.string.isRequired,
   xData: PropTypes.array.isRequired,
   yData: PropTypes.array.isRequired,
+  yAxis: PropTypes.number.isRequired,
 };

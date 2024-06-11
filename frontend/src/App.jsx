@@ -15,6 +15,7 @@ function App() {
     <>
       <ToastContainer
         position="top-right"
+        limit={1}
         autoClose={2000}
         hideProgressBar
         newestOnTop
@@ -30,7 +31,10 @@ function App() {
           path="/"
           element={user ? <Dashboard /> : <Navigate to={"/auth/login"} />}
         />
-        <Route path="/reports" element={<Reports />} />
+        <Route
+          path="/reports"
+          element={user ? <Reports /> : <Navigate to={"/auth/login"} />}
+        />
         <Route
           path="/auth/login"
           element={!user ? <Login /> : <Navigate to={"/"} />}

@@ -8,6 +8,8 @@ import { useLocation } from "../hooks/useFetchData";
 import Filter from "../views/dashboard/Filter";
 import Chart from "../views/dashboard/Chart";
 import DashboardTable from "../views/dashboard/DashboardTable";
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 export default function Dashboard() {
   const socket = useContext(SocketContext);
@@ -98,13 +100,52 @@ export default function Dashboard() {
       fetchDataChart();
     };
 
-    socket.on("data-baru", handleNewData);
+    socket.on("data-baru", (res) => {
+      const timestamp = new Date(res.timestamps).getTime();
+      const timenow = new Date().getTime();
+      const different = timenow - timestamp;
+      console.log(
+        `Different time: ${different} milliseconds / ${
+          different / 1000
+        } seconds`
+      );
+
+      if (res.data.tingkat_keparahan === "Tinggi") {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Terdeteksi Faktor Risiko Korosi",
+          text: "Segera lakukan pengecekan lebih lanjut dan perbaikan",
+          showConfirmButton: false,
+          timer: 5000,
+          heightAuto: true,
+          width: "50%",
+        });
+      }
+
+      if (res.data.tingkat_keparahan === "Sedang") {
+        toast.error(
+          "Terdeteksi faktor risiko korosi, segera lakukan pengecekan lebih lanjut"
+        );
+      }
+
+      if (res.data.tingkat_keparahan === "Rendah") {
+        toast.warn(
+          "Terdeteksi faktor risiko korosi, segera lakukan pengecekan"
+        );
+      }
+      setFilter({
+        period: "Harian",
+        location: locations[res.data.id_lokasi - 1],
+      });
+      handleNewData();
+    });
 
     // Bersihkan listener saat komponen di-unmount
     return () => {
-      socket.off("data-baru", handleNewData);
+      socket.off("data-baru");
     };
-  }, [pagination.page, socket, filter]);
+  }, [pagination.page, socket, filter, locations]);
 
   return (
     <div className="bg-gray-200 pb-10">
