@@ -12,6 +12,9 @@ export default function LineChart({ title, xData, yData, yAxis }) {
       toolbar: {
         show: false,
       },
+      zoom: {
+        enabled: false,
+      },
     },
     tooltip: {
       enabled: true,
