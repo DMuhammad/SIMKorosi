@@ -1,5 +1,6 @@
 import moment from "moment";
 import PropTypes from "prop-types";
+import { FolderArrowDownIcon, TrashIcon } from "@heroicons/react/24/outline";
 import Pagination from "./Pagination";
 import Thead from "./Thead";
 import { downloadData } from "../utils/fetch";
@@ -61,10 +62,10 @@ export default function RTable({
                     <td className="whitespace-nowrap px-3 py-4 text-center text-sm text-gray-500">
                       {moment(data.createdAt).format("DD MMMM YYYY, HH:mm:ss")}
                     </td>
-                    <td className="whitespace-nowrap py-4 text-center text-sm text-gray-500">
+                    <td className="whitespace-nowrap py-4 px-4 text-center text-sm text-gray-500 gap-4">
                       <button
                         type="button"
-                        className="rounded-md bg-green-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-green-600 hover:bg-green-500"
+                        className="rounded-md bg-green-600 px-2.5 py-1.5 mx-1 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-green-600 hover:bg-green-500"
                         onClick={() =>
                           handleDownload(
                             data.tanggal_mulai,
@@ -72,14 +73,16 @@ export default function RTable({
                           )
                         }
                       >
-                        Export to Excel
+                        <FolderArrowDownIcon className="h-5 w-5 lg:hidden" />
+                        <span className="hidden lg:block">Export to Excel</span>
                       </button>
                       <button
                         type="button"
-                        className="rounded-md bg-red-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-red-600  hover:bg-red-500"
+                        className="rounded-md bg-red-600 px-2.5 py-1.5 mx-1 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-red-600  hover:bg-red-500"
                         onClick={() => handleDelete(data.id)}
                       >
-                        Delete
+                        <TrashIcon className="h-5 w-5 lg:hidden" />
+                        <span className="hidden lg:block">Delete</span>
                       </button>
                     </td>
                   </tr>
