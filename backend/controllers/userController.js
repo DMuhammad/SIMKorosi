@@ -87,13 +87,13 @@ module.exports = {
       const accessToken = jwt.sign(
         { id: user.id, email },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: "1d" }
+        { expiresIn: "1m" }
       );
 
       const refreshToken = jwt.sign(
         { id: user.id, email },
         process.env.REFRESH_TOKEN_SECRET,
-        { expiresIn: "7d" }
+        { expiresIn: "5m" }
       );
 
       await User.update(
@@ -109,7 +109,7 @@ module.exports = {
 
       res.cookie("refresh_token", refreshToken, {
         httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000,
+        maxAge: 5 * 60 * 1000,
       });
 
       res.status(200).json({
@@ -171,7 +171,7 @@ module.exports = {
             { id },
             process.env.ACCESS_TOKEN_SECRET,
             {
-              expiresIn: "1d",
+              expiresIn: "1m",
             }
           );
 
@@ -180,6 +180,8 @@ module.exports = {
             code: 200,
             message: "Berhasil mengambil access token",
             data: {
+              id: user.id,
+              nama: user.nama_lengkap,
               accessToken,
             },
           });
