@@ -1,27 +1,22 @@
-import { useCallback, useState } from "react";
+import { useEffect, useState } from "react";
 import { getData } from "../utils/fetch";
 import moment from "moment";
 
 export const useLocation = () => {
-  const [locations, setLocations] = useState(null);
+  const [locations, setLocations] = useState(["Area A"]);
 
-  const fetchLocations = useCallback(async () => {
-    if (!locations) {
-      // Cek apakah locations sudah di-load atau tidak
+  useEffect(() => {
+    const fetchLocations = async () => {
       try {
         const results = await getData("/api/lokasi");
         setLocations(results.data.data.map((result) => result.nama_lokasi));
       } catch (err) {
         console.error(err);
       }
-    }
-  }, [locations]);
-
-  // Panggil fetchLocations segera untuk mengisi locations
-  fetchLocations();
-
-  // Jika locations belum di-load, kembalikan nilai default yang aman
-  return locations || ["Area A"];
+    };
+    fetchLocations();
+  }, []);
+  return locations;
 };
 export const useChartData = () => {
   const [xlabel, setXLabel] = useState([]);
