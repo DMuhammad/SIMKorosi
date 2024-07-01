@@ -8,17 +8,13 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.UUID,
       },
-      id_sensor_suhu: {
+      id_sensor: {
         allowNull: false,
         type: Sequelize.STRING,
-      },
-      id_sensor_kelembapan: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      id_sensor_ph: {
-        allowNull: false,
-        type: Sequelize.STRING,
+        references: {
+          key: "id",
+          model: "sensors",
+        },
       },
       suhu: {
         allowNull: false,
@@ -31,14 +27,6 @@ module.exports = {
       ph: {
         allowNull: false,
         type: Sequelize.FLOAT,
-      },
-      id_lokasi: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          key: "id",
-          model: "lokasis",
-        },
       },
       indikasi: {
         allowNull: true,

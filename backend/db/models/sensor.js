@@ -8,13 +8,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      // Sensor.hasMany(models.SensorData, {
-      //   foreignKey: "id_sensor",
-      //   as: "data",
-      // });
-      this.hasMany(models.SensorLokasi, {
-        foreignKey: "id_sensor",
+      this.belongsTo(models.Lokasi, {
+        foreignKey: "id_lokasi",
+        as: "lokasi",
       });
     }
   }
@@ -25,9 +21,13 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         primaryKey: true,
       },
-      jenis_sensor: {
+      id_lokasi: {
         allowNull: false,
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
+        references: {
+          key: "id",
+          model: "Lokasi",
+        },
       },
     },
     {

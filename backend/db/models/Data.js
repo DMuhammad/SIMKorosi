@@ -8,25 +8,21 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsTo(models.Lokasi, {
-        foreignKey: "id_lokasi",
-        as: "lokasi",
+      this.belongsTo(models.Sensor, {
+        foreignKey: "id_sensor",
+        as: "sensor",
       });
     }
   }
   Data.init(
     {
-      id_sensor_suhu: {
+      id_sensor: {
         allowNull: false,
         type: DataTypes.STRING,
-      },
-      id_sensor_kelembapan: {
-        allowNull: false,
-        type: DataTypes.STRING,
-      },
-      id_sensor_ph: {
-        allowNull: false,
-        type: DataTypes.STRING,
+        references: {
+          key: "id",
+          model: "Sensor",
+        },
       },
       suhu: {
         allowNull: false,
@@ -39,14 +35,6 @@ module.exports = (sequelize, DataTypes) => {
       ph: {
         allowNull: false,
         type: DataTypes.FLOAT,
-      },
-      id_lokasi: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
-        references: {
-          key: "id",
-          model: "lokasis",
-        },
       },
       indikasi: {
         allowNull: true,
