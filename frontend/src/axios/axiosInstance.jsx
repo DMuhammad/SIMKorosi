@@ -24,7 +24,7 @@ const AxiosInstance = () => {
       return config;
     },
     (error) => {
-      return new Promise.reject(error);
+      return error;
     }
   );
 
@@ -59,7 +59,7 @@ const AxiosInstance = () => {
           return window.location.replace("/auth/login");
         }
       } else {
-        return new Promise.reject(error);
+        return error;
       }
     }
   );

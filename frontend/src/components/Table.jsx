@@ -27,7 +27,7 @@ export default function Table({ datas, titles, pagination, handlePagination }) {
                       {data.ph}
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-center text-sm text-gray-500">
-                      {data.lokasi.nama_lokasi}
+                      {data.sensor.lokasi.nama_lokasi}
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-center text-sm text-gray-500">
                       {moment(data.createdAt).format("DD MMMM YYYY, HH:mm:ss")}

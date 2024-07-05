@@ -70,7 +70,9 @@ export default function Dashboard() {
 
     async function fetchDataChart() {
       const results = await getData(
-        `/api/korosi/charts?period=${filter.period}&location=${filter.location}`
+        `/api/korosi/charts?period=${filter.period}&id_lokasi=${
+          filter.location.split(":")[0]
+        }`
       );
       const newXLabels = [];
       const newSuhu = [];
@@ -135,7 +137,7 @@ export default function Dashboard() {
         );
       }
       setFilter({
-        period: "Harian",
+        period: "Bulanan",
         location: locations[res.data.id_lokasi - 1],
       });
       handleNewData();

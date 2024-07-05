@@ -3,13 +3,17 @@ import { getData } from "../utils/fetch";
 import moment from "moment";
 
 export const useLocation = () => {
-  const [locations, setLocations] = useState(["Area A"]);
+  const [locations, setLocations] = useState(["1: Area A"]);
 
   useEffect(() => {
     const fetchLocations = async () => {
       try {
         const results = await getData("/api/lokasi");
-        setLocations(results.data.data.map((result) => result.nama_lokasi));
+        setLocations(
+          results.data.data.map(
+            (result) => `${result.id}: ${result.nama_lokasi}`
+          )
+        );
       } catch (err) {
         console.error(err);
       }
