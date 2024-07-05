@@ -15,7 +15,18 @@ module.exports = {
         order: [["created_at", "DESC"]],
         limit: 10,
         offset: (page - 1) * limit,
-        include: ["lokasi"],
+        include: [
+          {
+            model: db.sequelize.models.Sensor,
+            as: "sensor",
+            include: [
+              {
+                model: db.sequelize.models.Lokasi,
+                as: "lokasi",
+              },
+            ],
+          },
+        ],
       });
 
       return res.status(200).json({
@@ -40,22 +51,23 @@ module.exports = {
   },
 
   async getDataCharts(req, res) {
-    const { period, location } = req.query;
+    const { period, id_lokasi } = req.query;
 
     try {
       const date = new Date().toISOString();
       const { startDate, endDate } = getDateRange(date, period);
       const data = await Data.findAll({
-        include: [
-          {
+        include: {
+          model: db.sequelize.models.Sensor,
+          as: "sensor",
+          where: {
+            id_lokasi: id_lokasi,
+          },
+          include: {
             model: db.sequelize.models.Lokasi,
             as: "lokasi",
-            where: {
-              nama_lokasi: location,
-            },
-            required: true,
           },
-        ],
+        },
         where: {
           created_at: {
             [db.Sequelize.Op.gte]: startDate,
