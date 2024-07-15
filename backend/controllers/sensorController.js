@@ -5,6 +5,20 @@ module.exports = {
   async addNewSensor(req, res) {
     const { mac_address, id_lokasi } = req.body;
     try {
+      const sensor = await Sensor.findOne({
+        where: {
+          id: mac_address,
+        },
+      });
+
+      if (sensor) {
+        return res.status(400).json({
+          status: "error",
+          code: 400,
+          message: "Sensor sudah terdaftar",
+        });
+      }
+
       await Sensor.create({
         id: mac_address,
         id_lokasi,
