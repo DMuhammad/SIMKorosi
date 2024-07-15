@@ -23,9 +23,9 @@ async function generateData() {
   ];
   for (let index = 0; index < 200; index++) {
     const id_sensor = sensors[Number(Math.floor(Math.random() * 14))];
-    const suhu = Number((Math.random() * 40).toFixed(1)) + 30;
-    const kelembapan = Number((Math.random() * 30).toFixed(1)) + 60;
-    const ph = Number((Math.random() * 10).toFixed(1)) + 3;
+    const suhu = Number((Math.random() * 40).toFixed(2)) + 30;
+    const kelembapan = Number((Math.random() * 30).toFixed(2)) + 60;
+    const ph = Number((Math.random() * 10).toFixed(2)) + 3;
 
     let indikasi, tingkat_keparahan;
 

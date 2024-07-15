@@ -124,9 +124,9 @@ module.exports = {
       const data = await Data.create({
         id: uuidv4(),
         id_sensor,
-        suhu,
-        kelembapan,
-        ph,
+        suhu: parseFloat(suhu.toFixed(2)),
+        kelembapan: parseFloat(kelembapan.toFixed(2)),
+        ph: parseFloat(ph.toFixed(2)),
         indikasi,
         tingkat_keparahan,
       });
