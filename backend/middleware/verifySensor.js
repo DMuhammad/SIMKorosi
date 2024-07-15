@@ -5,7 +5,7 @@ const Sensor = db.sequelize.models.Sensor;
 const verifySensor = async (req, res, next) => {
   const { id_sensor } = req.body;
 
-  const sensor = await Sensor.findAll({
+  const sensor = await Sensor.findOne({
     where: {
       id: id_sensor,
     },
