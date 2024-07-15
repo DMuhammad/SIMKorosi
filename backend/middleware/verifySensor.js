@@ -3,25 +3,18 @@ const db = require("../db/models");
 const Sensor = db.sequelize.models.Sensor;
 
 const verifySensor = async (req, res, next) => {
-  const { id_sensor_suhu, id_sensor_kelembapan, id_sensor_ph } = req.body;
-
-  const ids = [id_sensor_suhu, id_sensor_kelembapan, id_sensor_ph];
-  const errors = [];
+  const { id_sensor } = req.body;
 
   const sensor = await Sensor.findAll({
     where: {
-      id: {
-        [db.Sequelize.Op.in]: ids,
-      },
+      id: id_sensor,
     },
   });
 
-  if (sensor.length === ids.length) {
+  if (sensor) {
     next();
   } else {
-    const missingIds = ids.filter((id) => !sensor.some((s) => s.id === id));
-    missingIds.map((id) => errors.push(`Sensor ${id} tidak valid`));
-    res.status(401).json({ errors });
+    res.status(401).json({ error: `Sensor ${id_sensor} tidak valid` });
   }
 };
 
