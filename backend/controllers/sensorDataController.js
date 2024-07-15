@@ -92,15 +92,7 @@ module.exports = {
   },
 
   async addNewData(req, res) {
-    const {
-      id_sensor_suhu,
-      id_sensor_kelembapan,
-      id_sensor_ph,
-      suhu,
-      kelembapan,
-      ph,
-      id_lokasi,
-    } = req.body;
+    const { id_sensor, suhu, kelembapan, ph } = req.body;
     const io = socket.getIO();
 
     let indikasi, tingkat_keparahan;
@@ -131,13 +123,10 @@ module.exports = {
     try {
       const data = await Data.create({
         id: uuidv4(),
-        id_sensor_suhu,
-        id_sensor_kelembapan,
-        id_sensor_ph,
+        id_sensor,
         suhu,
         kelembapan,
         ph,
-        id_lokasi,
         indikasi,
         tingkat_keparahan,
       });
@@ -178,7 +167,18 @@ module.exports = {
             [db.Sequelize.Op.lte]: tanggal_selesai,
           },
         },
-        include: ["lokasi"],
+        include: [
+          {
+            model: db.sequelize.models.Sensor,
+            as: "sensor",
+            include: [
+              {
+                model: db.sequelize.models.Lokasi,
+                as: "lokasi",
+              },
+            ],
+          },
+        ],
       });
 
       const prepareDataForExcel = (data) => {
@@ -189,7 +189,7 @@ module.exports = {
           indikasi: item.indikasi,
           tingkat_keparahan: item.tingkat_keparahan,
           createdAt: item.createdAt,
-          nama_lokasi: item.lokasi.nama_lokasi,
+          nama_lokasi: item.sensor.lokasi.nama_lokasi,
         }));
       };
 
