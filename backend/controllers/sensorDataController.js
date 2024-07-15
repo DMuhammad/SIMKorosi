@@ -124,9 +124,9 @@ module.exports = {
       const data = await Data.create({
         id: uuidv4(),
         id_sensor,
-        suhu: parseFloat(suhu.toFixed(2)),
-        kelembapan: parseFloat(kelembapan.toFixed(2)),
-        ph: parseFloat(ph.toFixed(2)),
+        suhu: suhu.toFixed(2),
+        kelembapan: kelembapan.toFixed(2),
+        ph: ph.toFixed(2),
         indikasi,
         tingkat_keparahan,
       });
@@ -142,9 +142,9 @@ module.exports = {
         message: "Berhasil menambahkan data sensor",
         data: {
           id: data.id,
-          suhu,
-          kelembapan,
-          ph,
+          suhu: data.suhu,
+          kelembapan: data.kelembapan,
+          ph: data.ph,
         },
       });
     } catch (error) {
