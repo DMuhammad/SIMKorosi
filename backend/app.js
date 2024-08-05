@@ -14,7 +14,7 @@ const io = socket.init(server);
 app.use(
   cors({
     credentials: true,
-    origin: "http://localhost:5173",
+    origin: process.env.ORIGIN || "http://localhost:5173",
   })
 );
 

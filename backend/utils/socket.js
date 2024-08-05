@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { Server } = require("socket.io");
 let io;
 
@@ -5,7 +6,7 @@ module.exports = {
   init: (httpServer) => {
     io = new Server(httpServer, {
       cors: {
-        origin: "http://localhost:5173",
+        origin: process.env.ORIGIN || "http://localhost:5173",
       },
     });
     return io;
