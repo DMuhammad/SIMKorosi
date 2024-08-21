@@ -136,10 +136,7 @@ export default function Dashboard() {
           "Terdeteksi faktor risiko korosi, segera lakukan pengecekan"
         );
       }
-      setFilter({
-        period: "Bulanan",
-        location: locations[res.data.id_lokasi - 1],
-      });
+
       handleNewData();
     });
 
