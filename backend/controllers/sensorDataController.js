@@ -8,12 +8,12 @@ const Data = db.sequelize.models.Data;
 
 module.exports = {
   async getData(req, res) {
-    const limit = 10;
+    const limit = 50;
     const { page } = req.query;
     try {
       const { count, rows: data } = await Data.findAndCountAll({
         order: [["created_at", "DESC"]],
-        limit: 10,
+        limit: limit,
         offset: (page - 1) * limit,
         include: [
           {
@@ -133,7 +133,6 @@ module.exports = {
 
       io.emit("data-baru", {
         data,
-        timestamps: new Date(),
       });
 
       return res.status(201).json({

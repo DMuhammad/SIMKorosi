@@ -38,6 +38,14 @@ module.exports = {
   async addNewLaporan(req, res) {
     const { tanggal_mulai, tanggal_selesai, id_pengguna } = req.body;
     try {
+      if (tanggal_selesai < tanggal_mulai) {
+        return res.status(400).json({
+          status: "error",
+          code: 400,
+          message: "Tanggal akhir harus setelah tanggal awal",
+        });
+      }
+
       const laporan = await Laporan.create({
         id_pengguna,
         tanggal_mulai,
