@@ -103,7 +103,7 @@ export default function Dashboard() {
     };
 
     socket.on("data-baru", (res) => {
-      const timestamp = new Date(res.timestamps).getTime();
+      const timestamp = new Date(res.data.createdAt).getTime();
       const timenow = new Date().getTime();
       const different = timenow - timestamp;
       console.log(

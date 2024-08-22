@@ -47,11 +47,20 @@ export default function Reports() {
       tanggal_mulai: valueInput.min_date,
       tanggal_selesai: valueInput.max_date,
     })
-      .then(() => {
-        fetchData(id_pengguna, pagination.page);
+      .then((data) => {
+        if (data?.data?.status === "success") {
+          fetchData(id_pengguna, pagination.page);
+          toast.success("Laporan berhasil dibuat");
+        }
+
+        if (data?.response?.data?.status === "error") {
+          console.log(data?.response?.data);
+          toast.error(data?.response?.data?.message);
+        }
       })
       .catch((err) => {
         console.log(err);
+        toast.error("Gagal menambahkan laporan");
       });
   };
 
