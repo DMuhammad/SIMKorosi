@@ -56,16 +56,94 @@ module.exports = {
     try {
       const date = new Date().toISOString();
       const { startDate, endDate } = getDateRange(date, period);
+
+      if (period === "Bulanan") {
+        const data = await Data.findAll({
+          include: {
+            model: db.sequelize.models.Sensor,
+            as: "sensor",
+            attributes: [],
+            where: {
+              id_lokasi: id_lokasi,
+            },
+          },
+          attributes: [
+            [
+              db.Sequelize.fn("DATE", db.Sequelize.col("Data.created_at")),
+              "createdAt",
+            ],
+            [db.Sequelize.fn("MAX", db.Sequelize.col("suhu")), "suhu"],
+            [
+              db.Sequelize.fn("MAX", db.Sequelize.col("kelembapan")),
+              "kelembapan",
+            ],
+            [db.Sequelize.fn("MAX", db.Sequelize.col("ph")), "ph"],
+          ],
+          where: {
+            created_at: {
+              [db.Sequelize.Op.between]: [startDate, endDate],
+            },
+          },
+          group: ["createdAt"],
+          order: [["createdAt", "ASC"]],
+        });
+
+        return res.status(200).json({
+          status: "success",
+          code: 200,
+          message: "Berhasil mengambil data chart sensor",
+          data,
+        });
+      } else if (period === "Mingguan") {
+        const data = await Data.findAll({
+          include: {
+            model: db.sequelize.models.Sensor,
+            as: "sensor",
+            attributes: [],
+            where: {
+              id_lokasi: id_lokasi,
+            },
+          },
+          attributes: [
+            [
+              db.Sequelize.fn(
+                "DATE_TRUNC",
+                "hour",
+                db.Sequelize.col("Data.created_at")
+              ),
+              "createdAt",
+            ],
+            [db.Sequelize.fn("MAX", db.Sequelize.col("suhu")), "suhu"],
+            [
+              db.Sequelize.fn("MAX", db.Sequelize.col("kelembapan")),
+              "kelembapan",
+            ],
+            [db.Sequelize.fn("MAX", db.Sequelize.col("ph")), "ph"],
+          ],
+          where: {
+            created_at: {
+              [db.Sequelize.Op.between]: [startDate, endDate],
+            },
+          },
+          group: ["createdAt"],
+          order: [["createdAt", "ASC"]],
+        });
+
+        return res.status(200).json({
+          status: "success",
+          code: 200,
+          message: "Berhasil mengambil data chart sensor",
+          data,
+        });
+      }
+
       const data = await Data.findAll({
         include: {
           model: db.sequelize.models.Sensor,
           as: "sensor",
+          attributes: [],
           where: {
             id_lokasi: id_lokasi,
-          },
-          include: {
-            model: db.sequelize.models.Lokasi,
-            as: "lokasi",
           },
         },
         where: {
