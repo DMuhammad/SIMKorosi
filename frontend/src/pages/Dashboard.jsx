@@ -80,7 +80,11 @@ export default function Dashboard() {
       const newPh = [];
 
       results.data.data.forEach((result) => {
-        newXLabels.push(moment(result.createdAt).format("HH:mm:ss"));
+        filter.period === "Bulanan" && newXLabels.push(result.createdAt);
+        filter.period === "Mingguan" &&
+          newXLabels.push(moment(result.createdAt).format("D-MMM HH:mm"));
+        filter.period === "Harian" &&
+          newXLabels.push(moment(result.createdAt).format("HH:mm:ss"));
         newSuhu.push(result.suhu);
         newKelembapan.push(result.kelembapan);
         newPh.push(result.ph);

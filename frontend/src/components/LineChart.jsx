@@ -81,7 +81,7 @@ export default function LineChart({ title, xData, yData, yAxis }) {
           series={series}
           type="line"
           height={350}
-          width={xData.length * 40}
+          width={xData.length < 5 ? xData.length * 100 : xData.length * 40}
         />
       </div>
     </div>
