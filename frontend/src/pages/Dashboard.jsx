@@ -121,7 +121,9 @@ export default function Dashboard() {
           position: "center",
           icon: "error",
           title: "Terdeteksi Faktor Risiko Korosi",
-          text: "Segera lakukan pengecekan lebih lanjut dan perbaikan",
+          text: `Segera lakukan pengecekan lebih lanjut dan perbaikan di Area ${String.fromCharCode(
+            64 + res.data.id_lokasi
+          )}`,
           showConfirmButton: false,
           timer: 5000,
           heightAuto: true,
@@ -131,13 +133,17 @@ export default function Dashboard() {
 
       if (res.data.tingkat_keparahan === "Sedang") {
         toast.error(
-          "Terdeteksi faktor risiko korosi, segera lakukan pengecekan lebih lanjut"
+          `Terdeteksi faktor risiko korosi, segera lakukan pengecekan lebih lanjut di Area ${String.fromCharCode(
+            64 + res.data.id_lokasi
+          )}`
         );
       }
 
       if (res.data.tingkat_keparahan === "Rendah") {
         toast.warn(
-          "Terdeteksi faktor risiko korosi, segera lakukan pengecekan"
+          `Terdeteksi faktor risiko korosi, segera lakukan pengecekan di Area ${String.fromCharCode(
+            64 + res.data.id_lokasi
+          )}`
         );
       }
 

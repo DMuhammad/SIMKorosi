@@ -170,7 +170,7 @@ module.exports = {
   },
 
   async addNewData(req, res) {
-    const { id_sensor, suhu, kelembapan, ph } = req.body;
+    const { id_sensor, suhu, kelembapan, ph, id_lokasi } = req.body;
     const io = socket.getIO();
 
     let indikasi, tingkat_keparahan;
@@ -209,6 +209,8 @@ module.exports = {
         tingkat_keparahan,
       });
 
+      data.dataValues.id_lokasi = id_lokasi;
+
       io.emit("data-baru", {
         data,
       });
@@ -222,6 +224,7 @@ module.exports = {
           suhu: data.suhu,
           kelembapan: data.kelembapan,
           ph: data.ph,
+          id_lokasi: data.id_lokasi,
         },
       });
     } catch (error) {

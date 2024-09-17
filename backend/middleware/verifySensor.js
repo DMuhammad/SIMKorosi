@@ -12,6 +12,7 @@ const verifySensor = async (req, res, next) => {
   });
 
   if (sensor) {
+    req.body.id_lokasi = sensor.id_lokasi;
     next();
   } else {
     res.status(401).json({ error: `Sensor ${id_sensor} tidak valid` });
