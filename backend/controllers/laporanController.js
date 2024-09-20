@@ -37,12 +37,35 @@ module.exports = {
   },
   async addNewLaporan(req, res) {
     const { tanggal_mulai, tanggal_selesai, id_pengguna } = req.body;
+
     try {
+      if (!tanggal_mulai && !tanggal_selesai) {
+        return res.status(400).json({
+          status: "error",
+          code: 400,
+          message: "Tanggal Awal dan Tanggal Akhir tidak boleh kosong!",
+        });
+      }
+
+      if (!tanggal_mulai) {
+        return res.status(400).json({
+          status: "error",
+          code: 400,
+          message: "Tanggal awal tidak boleh kosong!",
+        });
+      } else if (!tanggal_selesai) {
+        return res.status(400).json({
+          status: "error",
+          code: 400,
+          message: "Tanggal akhir tidak boleh kosong!",
+        });
+      }
+
       if (tanggal_selesai < tanggal_mulai) {
         return res.status(400).json({
           status: "error",
           code: 400,
-          message: "Tanggal akhir harus setelah tanggal awal",
+          message: "Tanggal akhir harus setelah tanggal awal!",
         });
       }
 
