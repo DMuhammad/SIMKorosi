@@ -152,6 +152,7 @@ module.exports = {
             [db.Sequelize.Op.lte]: endDate,
           },
         },
+        order: [["createdAt", "ASC"]],
       });
 
       return res.status(200).json({
