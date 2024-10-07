@@ -150,9 +150,16 @@ export default function Dashboard() {
       handleNewData();
     });
 
+    socket.on("sensor", (res) => {
+      toast.error(res.message, {
+        position: "top-left",
+      });
+    });
+
     // Bersihkan listener saat komponen di-unmount
     return () => {
       socket.off("data-baru");
+      socket.off("sensor");
     };
   }, [pagination.page, socket, filter, locations]);
 

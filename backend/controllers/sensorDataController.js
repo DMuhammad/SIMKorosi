@@ -1,6 +1,7 @@
 const db = require("../db/models");
 const { v4: uuidv4 } = require("uuid");
 const excelJS = require("exceljs");
+const fs = require("fs");
 const socket = require("../utils/socket");
 const { getDateRange } = require("../utils/dateUtils");
 
@@ -173,6 +174,40 @@ module.exports = {
   async addNewData(req, res) {
     const { id_sensor, suhu, kelembapan, ph, id_lokasi } = req.body;
     const io = socket.getIO();
+
+    const sensorLists = JSON.parse(fs.readFileSync("./sensors.json", "utf-8"));
+
+    if (Object.keys(sensorLists).length == 0) {
+      const Sensor = db.sequelize.models.Sensor;
+      const sensors = await Sensor.findAll();
+      const availableSensors = {};
+
+      await sensors.map((sensor) => {
+        availableSensors[sensor.id] = {
+          id_lokasi: sensor.id_lokasi,
+          iterating: 0,
+        };
+      });
+
+      fs.writeFileSync(
+        "./sensors.json",
+        JSON.stringify(availableSensors),
+        "utf-8"
+      );
+    }
+
+    if (suhu == 0 || kelembapan == 0 || ph == 0) {
+      sensorLists[id_sensor].iterating = sensorLists[id_sensor].iterating + 1;
+      fs.writeFileSync("./sensors.json", JSON.stringify(sensorLists), "utf-8");
+    }
+
+    if (sensorLists[id_sensor].iterating >= 15) {
+      io.emit("sensor", {
+        message: `Sensor dengan MAC ${id_sensor} di lokasi ${id_lokasi} tidak mengirimkan data selama ${sensorLists[id_sensor].iterating}detik. Silahkan lakukan pengecekan!`,
+      });
+      sensorLists[id_sensor].iterating = 0;
+      fs.writeFileSync("./sensors.json", JSON.stringify(sensorLists), "utf-8");
+    }
 
     let indikasi, tingkat_keparahan;
 
